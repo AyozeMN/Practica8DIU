@@ -247,7 +247,6 @@ public class Main extends javax.swing.JFrame {
             "· Welcome to the Threshold Application"
             + "\n \t - Use the Menu Item 'File' (Alt+F) to: "
             + "\n \t \t + Open an Image File (Ctrl+O)"
-            + "\n \t \t + Save the current Image to a File (Ctrl+S)"
             + "\n \t \t + Close the current Image File (Ctrl+X)"
             + "\n \t - Use the Menu Item 'Edit' (Alt+E) to: "
             + "\n \t \t + Modify the Image File inputting the Threshold value (Ctrl+T)"
