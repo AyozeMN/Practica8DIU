@@ -14,13 +14,16 @@ import org.opencv.core.Mat;
  * @author Ayoze
  */
 public class InternalWindow extends javax.swing.JInternalFrame {
+    int width, height;
     
     /**
      * Creates new form VentanaInterna
      */
-    public InternalWindow() {
+    public InternalWindow(int width, int height) {
+        this.width = width;
+        this.height = height;
         initComponents();
-        //this.setPreferredSize(new Dimension(100, 80));
+        //this.setPreferredSize(new Dimension(width, height));
         this.setMaximizable(true);
         this.setIconifiable(true);
         this.setClosable(true);
@@ -45,6 +48,8 @@ public class InternalWindow extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         lienzo1 = new com.mycompany.practica8.Lienzo();
+
+        setPreferredSize(new Dimension(width, height));
 
         javax.swing.GroupLayout lienzo1Layout = new javax.swing.GroupLayout(lienzo1);
         lienzo1.setLayout(lienzo1Layout);

@@ -3,6 +3,7 @@ package com.mycompany.practica8;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 
 /**
@@ -23,6 +25,7 @@ public class Main extends javax.swing.JFrame {
     FileNameExtensionFilter filtroJPEG = null;
     FileNameExtensionFilter filtroPNG = null;
     Mat img;
+    BufferedImage imgBI;
     
     public Main() {
         initComponents();
@@ -32,15 +35,12 @@ public class Main extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         
-        jDesktopPane.addComponentListener(new ComponentAdapter(){
+        /*jDesktopPane.addComponentListener(new ComponentAdapter(){
             @Override
             public void componentResized(ComponentEvent e){
-                 for (JInternalFrame window : jDesktopPane.getAllFrames()) {
-                    if (window.getLocation().x > jDesktopPane.getWidth() || window.getLocation().y > jDesktopPane.getHeight()) 
-                        window.setLocation(new Point(jDesktopPane.getWidth() - window.getWidth(), jDesktopPane.getHeight()- window.getHeight()));                
-                }
+                 
             }
-        });
+        });*/
     }
 
     /**
@@ -66,11 +66,16 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Opening Windows (Made By: Ayoze Mesa Núñez & Nicolás Rey Alonso)");
-        setMaximumSize(new java.awt.Dimension(1024, 797));
-        setPreferredSize(new java.awt.Dimension(1024, 797));
+        setMaximumSize(new java.awt.Dimension(1100, 850));
+        setPreferredSize(new java.awt.Dimension(1100, 850));
 
         jDesktopPane.setMaximumSize(new java.awt.Dimension(1024, 768));
         jDesktopPane.setPreferredSize(new java.awt.Dimension(1024, 768));
+        jDesktopPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                jDesktopPaneComponentResized(evt);
+            }
+        });
 
         javax.swing.GroupLayout jDesktopPaneLayout = new javax.swing.GroupLayout(jDesktopPane);
         jDesktopPane.setLayout(jDesktopPaneLayout);
@@ -185,7 +190,9 @@ public class Main extends javax.swing.JFrame {
 
             img = Imgcodecs.imread(fichero.getAbsolutePath());
             
-            InternalWindow window = new InternalWindow();
+            imgBI = (BufferedImage) HighGui.toBufferedImage(img);
+            
+            InternalWindow window = new InternalWindow(imgBI.getWidth(), imgBI.getHeight());
             window.setImg(img);
             window.setTitle(fichero.getName());
             jDesktopPane.add(window);
@@ -222,7 +229,7 @@ public class Main extends javax.swing.JFrame {
         try {
             Integer res5 = Integer.parseInt(umbral);
             
-            InternalWindow window = new InternalWindow();
+            InternalWindow window = new InternalWindow(imgBI.getWidth(), imgBI.getHeight());
             window.setImg(img);
             window.umbralCall(res5);
             
@@ -247,6 +254,21 @@ public class Main extends javax.swing.JFrame {
             + "\n \t * Search for help in the Menu Item 'Help' (Alt+H) to receive functional information",
             "Info Window", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItemInfoActionPerformed
+
+    private void jDesktopPaneComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jDesktopPaneComponentResized
+        for (JInternalFrame window : jDesktopPane.getAllFrames()) {
+            if ((window.getLocation().x + window.getWidth()) > jDesktopPane.getWidth()) {
+                if (jDesktopPane.getWidth() - window.getWidth() > 0) {
+                    window.setLocation(new Point((jDesktopPane.getWidth() - window.getWidth())/2, (jDesktopPane.getHeight()- window.getHeight())/2));
+                }
+            }
+            if ((window.getLocation().y + window.getHeight()) > jDesktopPane.getHeight()) {
+                if (jDesktopPane.getHeight()- window.getHeight() > 0) {
+                    window.setLocation(new Point((jDesktopPane.getWidth() - window.getWidth())/2, (jDesktopPane.getHeight()- window.getHeight())/2));
+                }
+            }
+        }
+    }//GEN-LAST:event_jDesktopPaneComponentResized
 
     /**
      * @param args the command line arguments
